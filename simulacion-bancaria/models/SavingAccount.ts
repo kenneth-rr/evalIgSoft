@@ -1,17 +1,22 @@
+export interface ISavingAccount {
+    Id: string;
+    Balance: number;
+    Rate: number; // rate in decimal format (e.g., 0.05 = 5%)
+    CalculateRate(months: number): number;
+    Deposit(amount: number): number;
+    Retire(amount: number): number;
+}
+
 export class SavingAccount {
-    // IdAccount: llave foranea a Account
-    public IdAccount: string;
     public Id: string;
     public Balance: number;
     public Rate: number; // tasa en formato decimal (ej. 0.05 = 5%)
 
     constructor(
-        IdAccount: string,
         Id: string,
         Balance?: number,
         Rate?: number
     ) {
-        this.IdAccount = IdAccount;
         this.Id = Id;
         this.Balance = Balance ?? 0;
         this.Rate = Rate ?? 0;

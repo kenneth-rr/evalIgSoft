@@ -1,11 +1,13 @@
+export interface ICheckingAccount {
+    Id: string;
+    Balance: number;
+}
+
 export class CheckingAccount {
-    // IdAccount: llave foránea proveniente de Accounts
-    public readonly IdAccount: string;
     public readonly Id: string;
     private _balance: number;
 
-    constructor(IdAccount: string, Id: string, balance: number) {
-        this.IdAccount = IdAccount;
+    constructor( Id: string, balance: number) {
         this.Id = Id;
         this._balance = balance;
     }

@@ -23,6 +23,8 @@ export default class CDT {
 
     // "Cierra" el CDT: marca como inactivo y retorna el dinero acumulado
     ClosedCDT(): number {
+        this.Rate = 0;
+        this.Balance = 0;
         this.Active = false;
         return this.Balance;
     }

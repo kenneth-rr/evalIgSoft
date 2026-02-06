@@ -32,10 +32,14 @@ export default function Home() {
     cdtInstance.Balance = balance;
     cdtInstance.Rate = rate;
     cdtInstance.Active = true;
+
+    // actualizar la cuenta corriente restando el monto del CDT
+    checkingAccountInstance.Retire(balance);
     
     syncAccountsRegistry();
     setUpdateTrigger((prev) => prev + 1);
     setShowCreateCDTModal(false);
+
   }, []);
 
   // Calcula saldo total (se actualiza en cada render)
@@ -87,7 +91,7 @@ export default function Home() {
               onClick={() => setShowCreateCDTModal(true)}
               className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition font-medium text-sm"
             >
-              ➕ Crear CDT
+              Crear CDT
             </button>
           </div>
 
@@ -101,7 +105,7 @@ export default function Home() {
               onUpdated={handleAccountUpdated}
             />
             <CardAccount
-              cdt={cdtInstance}
+              cdtProp={{ cdt: cdtInstance, checkingAccountCdt: checkingAccountInstance }}
               onUpdated={handleAccountUpdated}
             />
           </div>

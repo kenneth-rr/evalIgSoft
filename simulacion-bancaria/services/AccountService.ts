@@ -101,13 +101,15 @@ export function calculateCDTMaturity(cdt: CDT): { finalBalance: number; accumula
 /**
  * Cierra un CDT y retorna el saldo final (inicial + interés).
  */
-export function closeCDT(cdt: CDT): { success: boolean; finalBalance: number; error?: string } {
+export function closeCDT(cdt: CDT, checkingAccount: CheckingAccount): { success: boolean; finalBalance: number; error?: string } {
   try {
     if (!cdt.Active) {
       return { success: false, finalBalance: cdt.Balance, error: 'CDT ya estaba cerrado' };
     }
     const { finalBalance } = calculateCDTMaturity(cdt);
     cdt.ClosedCDT();
+    checkingAccount.Deposit(finalBalance);
+    console.log(`CDT cerrado. Monto transferido a cuenta corriente: $${finalBalance.toFixed(2)}`, cdt, checkingAccount);
     return { success: true, finalBalance };
   } catch (error) {
     return { success: false, finalBalance: cdt.Balance, error: (error as Error).message };

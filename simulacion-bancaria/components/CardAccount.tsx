@@ -8,8 +8,6 @@ import {
   withdrawFromSavingAccount,
   depositToCheckingAccount,
   withdrawFromCheckingAccount,
-  calculateSavingAccountInterest,
-  calculateCDTMaturity,
   closeCDT,
 } from '@/services/AccountService';
 import { ModalShowBalance } from './ModalShowBalance';
@@ -17,22 +15,24 @@ import { ModalShowBalance } from './ModalShowBalance';
 export interface CardAccountProps {
   savingAccount?: SavingAccount | null;
   checkingAccount?: CheckingAccount | null;
-  cdt?: CDT | null;
+  cdtProp?: {
+    cdt: CDT;
+    checkingAccountCdt: CheckingAccount;
+  } | null;
   onUpdated?: () => void; // Callback para notificar cambios al padre
 }
 
 export function CardAccount({
   savingAccount,
   checkingAccount,
-  cdt,
+  cdtProp,
   onUpdated,
 }: CardAccountProps) {
   const [showForm, setShowForm] = useState<'deposit' | 'withdraw' | false>(false);
   const [amount, setAmount] = useState<string>('');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [interestMonths, setInterestMonths] = useState<string>('3');
   const [showBalanceModal, setShowBalanceModal] = useState(false);
-
+  const { cdt, checkingAccountCdt } = cdtProp || {};
   const handleFormClose = () => {
     setShowForm(false);
     setAmount('');
@@ -93,42 +93,15 @@ export function CardAccount({
     setAmount('');
   };
 
-  const handleCalculateInterest = () => {
-    if (!savingAccount) return;
-    const months = parseInt(interestMonths, 10);
-    if (isNaN(months) || months < 0) {
-      setMessage({ type: 'error', text: 'Meses inválido' });
-      return;
-    }
-    const result = calculateSavingAccountInterest(savingAccount, months);
-    if (result.success) {
-      setMessage({
-        type: 'success',
-        text: `Interés en ${months} meses: $${result.interest.toFixed(2)}. Total con interés: $${result.totalWithInterest.toFixed(2)}`,
-      });
-    } else {
-      setMessage({ type: 'error', text: result.error || 'Error en cálculo' });
-    }
-  };
-
   const handleCloseCDT = () => {
-    if (!cdt) return;
-    const result = closeCDT(cdt);
+    if (!cdt || !checkingAccountCdt) return;
+    const result = closeCDT(cdt, checkingAccountCdt);
     if (result.success) {
       setMessage({ type: 'success', text: `CDT cerrado. Saldo final: $${result.finalBalance.toFixed(2)}` });
       onUpdated?.();
     } else {
       setMessage({ type: 'error', text: result.error || 'Error al cerrar CDT' });
     }
-  };
-
-  const handleShowMaturity = () => {
-    if (!cdt) return;
-    const { finalBalance, accumulatedInterest } = calculateCDTMaturity(cdt);
-    setMessage({
-      type: 'success',
-      text: `Saldo al vencimiento: $${finalBalance.toFixed(2)} (Interés: $${accumulatedInterest.toFixed(2)})`,
-    });
   };
 
   // Componente de formulario reutilizable
@@ -200,7 +173,7 @@ export function CardAccount({
             onClick={() => setShowBalanceModal(true)}
             className="w-full mt-3 px-3 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition font-medium"
           >
-            📈 Ver Crecimiento (hasta 2 años)
+            📈 Ver Crecimiento
           </button>
         )}
 
@@ -243,12 +216,6 @@ export function CardAccount({
             >
               Retirar
             </button>
-            <button
-              onClick={() => setShowBalanceModal(true)}
-              className="w-full px-3 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition font-medium"
-            >
-              📈 Ver Crecimiento
-            </button>
           </div>
         )}
 
@@ -281,12 +248,6 @@ export function CardAccount({
 
         {cdt.Active && (
           <div className="flex gap-2 mt-4 flex-col">
-            <button
-              onClick={handleShowMaturity}
-              className="w-full px-3 py-2 bg-orange-500 text-white text-sm rounded hover:bg-orange-600 transition"
-            >
-              Ver Vencimiento
-            </button>
             <button
               onClick={() => setShowBalanceModal(true)}
               className="w-full px-3 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition font-medium"

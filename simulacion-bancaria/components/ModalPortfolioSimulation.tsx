@@ -70,7 +70,7 @@ export function ModalPortfolioSimulation({
         cdtBalance,
         totalBalance,
         totalInterest,
-      });
+      }); 
     }
 
     return data;

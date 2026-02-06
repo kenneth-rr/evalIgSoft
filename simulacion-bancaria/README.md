@@ -215,20 +215,7 @@ const handleAccountUpdated = useCallback(() => {
 - **UI Library**: React 19
 - **Lenguaje**: TypeScript 5
 - **Estilos**: Tailwind CSS
-- **Testing**: Jest, React Testing Library
 - **Build Tool**: pnpm, Turbopack
-
-## 📚 Aprendizajes Clave
-
-Al trabajar en este proyecto, aprenderás:
-
-1. **Arquitectura Limpia**: Separación de responsabilidades en capas
-2. **TypeScript Avanzado**: Types discriminados, generics, utilities
-3. **React Hooks**: `useState`, `useCallback`, composición
-4. **Patrones de Diseño**: 5 patrones implementados y explicados
-5. **Testing**: Unit tests, integration tests, assertions
-6. **Next.js**: App Router, SSR basics, bundling
-7. **Tailwind CSS**: Responsive design, dark mode
 
 ## 🚦 Mejoras Futuras
 
@@ -244,25 +231,10 @@ Al trabajar en este proyecto, aprenderás:
 ## 📖 Documentación
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Arquitectura detallada y patrones
-- [TESTING.md](TESTING.md) - Guía de testing con ejemplos
 - [Next.js Docs](https://nextjs.org/docs)
 - [React Docs](https://react.dev)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
-## 🤝 Contribuir
-
-Este es un proyecto de aprendizaje. Siéntete libre de:
-- Extender funcionalidades
-- Refactorizar código
-- Añadir tests
-- Mejorar UX/UI
-- Documentar conocimientos
-
-## 📄 Licencia
-
-MIT - Libre para uso educativo y comercial
-
----
 
 **Última actualización**: Febrero 2026
-**Estado**: ✅ Refactor arquitectónico completado
+**Estado**: Creado Mock para hacer sumulación y presentación
